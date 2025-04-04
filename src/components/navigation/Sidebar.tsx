@@ -70,7 +70,7 @@ export default function Sidebar() {
       {isMobileMenuOpen && (
         <div className="md:hidden fixed inset-y-0 left-0 z-50 w-64 bg-card shadow-lg">
           <div className="p-4 flex items-center justify-between border-b border-border">
-            <div className="text-xl font-bold text-primary">SleepWell</div>
+            <div className="text-xl font-bold text-primary">RealSleep</div>
             <button
               onClick={toggleMobileMenu}
               className="p-1 rounded-md hover:bg-muted transition-colors"

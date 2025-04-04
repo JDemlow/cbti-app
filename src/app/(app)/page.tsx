@@ -9,7 +9,7 @@ export default function LandingPage() {
       <nav className="container flex items-center justify-between py-6">
         {/* Responsive Logo */}
         <div className="text-xl font-bold text-primary truncate max-w-[120px] sm:max-w-none">
-          SleepWell
+          RealSleep
         </div>
         <div className="flex items-center gap-2 sm:gap-6">
           <Link
@@ -137,7 +137,7 @@ export default function LandingPage() {
         <div className="container">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-lg md:text-xl font-bold text-primary mb-4 md:mb-0">
-              SleepWell
+              RealSleep
             </div>
             <div className="flex gap-4 sm:gap-6 text-xs sm:text-sm">
               <Link
@@ -161,7 +161,7 @@ export default function LandingPage() {
             </div>
           </div>
           <div className="mt-4 sm:mt-6 text-center text-xs sm:text-sm text-muted-foreground">
-            © {new Date().getFullYear()} SleepWell. All rights reserved.
+            © {new Date().getFullYear()} RealSleep. All rights reserved.
           </div>
         </div>
       </footer>

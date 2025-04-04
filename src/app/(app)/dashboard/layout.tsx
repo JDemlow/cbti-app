@@ -2,7 +2,7 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Dashboard | SleepWell CBT-I Program",
+  title: "Dashboard | RealSleep CBT-I Program",
   description:
     "Track your sleep progress, complete daily tasks, and follow your CBT-I program.",
 };

@@ -3,7 +3,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "SleepWell - CBT-I Program",
+  title: "RealSleep - CBT-I Program",
   description:
     "A 12-week Cognitive Behavioral Therapy for Insomnia program to help improve your sleep patterns.",
 };

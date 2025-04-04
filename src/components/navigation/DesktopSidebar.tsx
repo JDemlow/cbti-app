@@ -37,7 +37,7 @@ export default function DesktopSidebar() {
   return (
     <div className="hidden md:flex md:flex-col w-64 bg-card border-r border-border h-screen">
       <div className="p-4 flex items-center justify-between border-b border-border">
-        <div className="text-xl font-bold text-primary">SleepWell</div>
+        <div className="text-xl font-bold text-primary">RealSleep</div>
       </div>
 
       {/* User Profile */}
