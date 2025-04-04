@@ -52,6 +52,7 @@ export default function Sidebar() {
           <button
             onClick={toggleMobileMenu}
             className="p-2 rounded-md hover:bg-muted transition-colors"
+            aria-label="Toggle menu"
           >
             <Bars3Icon className="w-6 h-6" />
           </button>
@@ -60,76 +61,82 @@ export default function Sidebar() {
         </div>
       </div>
 
-      {/* Mobile Menu Overlay - only shown when menu is open */}
+      {/* Mobile Menu Overlay - with fade animation */}
       {isMobileMenuOpen && (
         <div
-          className="md:hidden fixed inset-0 bg-background/80 backdrop-blur-sm z-50"
+          className="md:hidden fixed inset-0 bg-background/80 backdrop-blur-sm z-50 animate-fadeIn"
           onClick={toggleMobileMenu}
+          aria-hidden="true"
         />
       )}
 
-      {/* Mobile Menu - only shown when menu is open */}
-      {isMobileMenuOpen && (
-        <div className="md:hidden fixed inset-y-0 left-0 z-50 w-64 bg-card shadow-lg">
-          <div className="p-4 flex items-center justify-between border-b border-border">
-            <div className="text-xl font-bold text-primary">RealSleep</div>
-            <button
-              onClick={toggleMobileMenu}
-              className="p-1 rounded-md hover:bg-muted transition-colors"
-            >
-              <XMarkIcon className="w-5 h-5" />
-            </button>
-          </div>
+      {/* Mobile Menu - with slide animation */}
+      <div
+        className={`
+          md:hidden fixed inset-y-0 left-0 z-50 w-64 bg-card shadow-lg
+          transform transition-transform duration-300 ease-in-out
+          ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"}
+        `}
+      >
+        <div className="p-4 flex items-center justify-between border-b border-border">
+          <div className="text-xl font-bold text-primary">RealSleep</div>
+          <button
+            onClick={toggleMobileMenu}
+            className="p-1 rounded-md hover:bg-muted transition-colors"
+            aria-label="Close menu"
+          >
+            <XMarkIcon className="w-5 h-5" />
+          </button>
+        </div>
 
-          {/* User Profile */}
-          <div className="p-4 border-b border-border">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-accent flex items-center justify-center text-white">
-                A
-              </div>
-              <div>
-                <div className="font-medium">Alex Johnson</div>
-                <div className="text-sm text-muted-foreground">Week 3</div>
-              </div>
+        {/* User Profile */}
+        <div className="p-4 border-b border-border">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-accent flex items-center justify-center text-white">
+              A
+            </div>
+            <div>
+              <div className="font-medium">Alex Johnson</div>
+              <div className="text-sm text-muted-foreground">Week 3</div>
             </div>
           </div>
-
-          {/* Navigation Links */}
-          <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
-            {navItems.map((item) => {
-              const isActive =
-                pathname === item.href || pathname.startsWith(`${item.href}/`);
-
-              return (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className={`
-                    flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors
-                    ${
-                      isActive
-                        ? "bg-primary/10 text-primary"
-                        : "hover:bg-muted text-foreground hover:text-primary"
-                    }
-                  `}
-                  onClick={toggleMobileMenu}
-                >
-                  <item.icon className="w-5 h-5" />
-                  {item.name}
-                </Link>
-              );
-            })}
-          </nav>
-
-          {/* Log Out */}
-          <div className="p-4 border-t border-border">
-            <button className="flex w-full items-center gap-3 px-3 py-2 rounded-md text-sm font-medium hover:bg-muted transition-colors">
-              <PowerIcon className="w-5 h-5" />
-              Log Out
-            </button>
-          </div>
         </div>
-      )}
+
+        {/* Navigation Links */}
+        <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
+          {navItems.map((item) => {
+            const isActive =
+              pathname === item.href || pathname.startsWith(`${item.href}/`);
+
+            return (
+              <Link
+                key={item.name}
+                href={item.href}
+                className={`
+                  flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors
+                  ${
+                    isActive
+                      ? "bg-primary/10 text-primary"
+                      : "hover:bg-muted text-foreground hover:text-primary"
+                  }
+                `}
+                onClick={toggleMobileMenu}
+              >
+                <item.icon className="w-5 h-5" />
+                {item.name}
+              </Link>
+            );
+          })}
+        </nav>
+
+        {/* Log Out */}
+        <div className="p-4 border-t border-border">
+          <button className="flex w-full items-center gap-3 px-3 py-2 rounded-md text-sm font-medium hover:bg-muted transition-colors">
+            <PowerIcon className="w-5 h-5" />
+            Log Out
+          </button>
+        </div>
+      </div>
     </>
   );
 }
