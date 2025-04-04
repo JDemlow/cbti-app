@@ -17,6 +17,7 @@ import {
   QuestionMarkCircleIcon,
   PowerIcon,
   UserIcon,
+  AcademicCapIcon,
 } from "@heroicons/react/24/outline";
 
 interface NavItem {
@@ -31,6 +32,7 @@ const navItems: NavItem[] = [
   { name: "Progress", href: "/progress", icon: ChartBarIcon },
   { name: "Program", href: "/program", icon: BookOpenIcon },
   { name: "Relaxation", href: "/relaxation", icon: BellIcon },
+  { name: "Learn", href: "/learn", icon: AcademicCapIcon }, // New Learn link
   { name: "Profile", href: "/profile", icon: UserIcon },
   { name: "Settings", href: "/settings", icon: Cog6ToothIcon },
   { name: "Help", href: "/help", icon: QuestionMarkCircleIcon },
