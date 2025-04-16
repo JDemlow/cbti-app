@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { ClockIcon } from "@heroicons/react/24/outline";
 import {
   PlayIcon,
   PauseIcon,
@@ -218,6 +219,3 @@ const RelaxationTimer: React.FC<RelaxationTimerProps> = ({
 };
 
 export default RelaxationTimer;
-
-// Missing import at the top of the file
-import { ClockIcon } from "@heroicons/react/24/outline";

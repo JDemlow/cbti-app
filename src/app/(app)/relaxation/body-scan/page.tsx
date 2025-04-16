@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import RelaxationTimer from "@/components/relaxation/RelaxationTimer";
 import {
   ArrowLeftIcon,
   ClockIcon,
@@ -10,54 +11,14 @@ import {
   BookmarkIcon,
   CheckIcon,
 } from "@heroicons/react/24/outline";
-import RelaxationTimer from "./RelaxationTimer";
 
-interface Step {
-  text: string;
-}
-
-interface Benefit {
-  text: string;
-}
-
-interface Tip {
-  text: string;
-}
-
-interface RelatedTechnique {
-  name: string;
-  path: string;
-}
-
-interface TechniqueDetailProps {
-  title: string;
-  description: string;
-  duration: string;
-  difficulty: "easy" | "medium" | "hard";
-  steps: Step[];
-  benefits: Benefit[];
-  tips: Tip[];
-  relatedTechniques: RelatedTechnique[];
-  defaultTimerMinutes?: number;
-}
-
-const TechniqueDetail: React.FC<TechniqueDetailProps> = ({
-  title,
-  description,
-  duration,
-  difficulty,
-  steps,
-  benefits,
-  tips,
-  relatedTechniques,
-}) => {
+export default function BodyScanMeditationPage() {
   const [isFavorite, setIsFavorite] = useState(false);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
   const [isStarted, setIsStarted] = useState(false);
 
   const toggleFavorite = () => {
     setIsFavorite(!isFavorite);
-    // In a real implementation, this would persist to user data
   };
 
   const toggleStepCompletion = (stepIndex: number) => {
@@ -73,28 +34,40 @@ const TechniqueDetail: React.FC<TechniqueDetailProps> = ({
     setIsStarted(false);
   };
 
-  const getDifficultyBadge = () => {
-    switch (difficulty) {
-      case "easy":
-        return (
-          <span className="bg-success/10 text-success text-xs px-2 py-0.5 rounded">
-            Beginner
-          </span>
-        );
-      case "medium":
-        return (
-          <span className="bg-warning/10 text-warning text-xs px-2 py-0.5 rounded">
-            Intermediate
-          </span>
-        );
-      case "hard":
-        return (
-          <span className="bg-error/10 text-error text-xs px-2 py-0.5 rounded">
-            Advanced
-          </span>
-        );
-    }
-  };
+  // Define the steps for Body Scan Meditation
+  const steps = [
+    "Find a comfortable position, either lying down or sitting in a supportive chair.",
+    "Close your eyes and take a few deep, calming breaths.",
+    "Begin to focus your attention on your toes, noticing any sensations without judgment.",
+    "Gradually move your attention slowly up through your feet, ankles, and lower legs.",
+    "Continue moving your awareness through your knees, thighs, and hips.",
+    "Shift your focus to your lower back, abdomen, and then your chest.",
+    "Move your attention to your upper back, shoulders, and upper arms.",
+    "Bring awareness to your elbows, forearms, and hands.",
+    "Focus on your neck and throat area.",
+    "Slowly move your attention to your face, including jaw, cheeks, eyes, and forehead.",
+    "Take a moment to sense your entire body as a whole.",
+    "Gently bring your awareness back to your breath and the present moment.",
+  ];
+
+  // Benefits of this technique
+  const benefits = [
+    "Increases body awareness and mindfulness",
+    "Reduces physical tension and stress",
+    "Helps calm racing thoughts",
+    "Improves ability to relax and let go of tension",
+    "Can help manage chronic pain and discomfort",
+    "Enhances mind-body connection",
+  ];
+
+  // Tips for better practice
+  const tips = [
+    "Move slowly and deliberately through each body part",
+    "If your mind wanders, gently bring it back to the body part you're focusing on",
+    "Don't try to change any sensations, just observe them",
+    "Practice in a quiet, comfortable environment",
+    "It's normal for your mind to drift - this is part of the practice",
+  ];
 
   return (
     <div className="container py-6">
@@ -109,38 +82,53 @@ const TechniqueDetail: React.FC<TechniqueDetailProps> = ({
             <span>Back to techniques</span>
           </Link>
 
-          <button
-            onClick={toggleFavorite}
-            className="flex items-center gap-1 text-sm"
-            aria-label={
-              isFavorite ? "Remove from favorites" : "Add to favorites"
-            }
-          >
-            <BookmarkIcon
-              className={`w-5 h-5 ${
-                isFavorite
-                  ? "fill-primary text-primary"
-                  : "text-muted-foreground"
-              }`}
-            />
-            <span>{isFavorite ? "Favorited" : "Add to favorites"}</span>
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={toggleFavorite}
+              className="flex items-center gap-1 text-sm"
+              aria-label={
+                isFavorite ? "Remove from favorites" : "Add to favorites"
+              }
+            >
+              <BookmarkIcon
+                className={`w-5 h-5 ${
+                  isFavorite
+                    ? "fill-primary text-primary"
+                    : "text-muted-foreground"
+                }`}
+              />
+              <span>{isFavorite ? "Favorited" : "Add to favorites"}</span>
+            </button>
+          </div>
         </div>
 
-        <h1 className="text-2xl font-bold">{title}</h1>
+        <h1 className="text-2xl font-bold">Body Scan Meditation</h1>
         <div className="flex items-center gap-2 mt-2">
           <span className="flex items-center text-muted-foreground text-sm">
             <ClockIcon className="w-4 h-4 mr-1" />
-            {duration}
+            10-20 minutes
           </span>
-          {getDifficultyBadge()}
+          <span className="bg-warning/10 text-warning text-xs px-2 py-0.5 rounded">
+            Intermediate
+          </span>
         </div>
       </div>
 
       {/* Introduction */}
       <div className="bg-card border border-border rounded-lg p-6 mb-6">
         <h2 className="text-xl font-semibold mb-3">About This Technique</h2>
-        <p className="mb-0">{description}</p>
+        <p className="mb-4">
+          Body Scan Meditation is a mindfulness practice that involves
+          systematically focusing your attention on different parts of your
+          body, from toes to head. This technique helps you develop a deeper
+          awareness of bodily sensations, release tension, and cultivate a sense
+          of calm and presence.
+        </p>
+        <p>
+          By methodically moving your attention through your body, you learn to
+          observe sensations without judgment, which can help reduce stress,
+          anxiety, and physical tension.
+        </p>
       </div>
 
       {/* Start button or progress */}
@@ -219,7 +207,7 @@ const TechniqueDetail: React.FC<TechniqueDetailProps> = ({
                         : ""
                     }
                   >
-                    {step.text}
+                    {step}
                   </p>
                 </div>
               </div>
@@ -244,7 +232,7 @@ const TechniqueDetail: React.FC<TechniqueDetailProps> = ({
           {benefits.map((benefit, index) => (
             <li key={index} className="flex items-start">
               <span className="text-primary mr-2">•</span>
-              <span>{benefit.text}</span>
+              <span>{benefit}</span>
             </li>
           ))}
         </ul>
@@ -259,7 +247,7 @@ const TechniqueDetail: React.FC<TechniqueDetailProps> = ({
               <span className="flex-shrink-0 w-5 h-5 bg-primary/10 text-primary rounded-full flex items-center justify-center mr-2 mt-0.5">
                 <span className="text-xs">{index + 1}</span>
               </span>
-              <span>{tip.text}</span>
+              <span>{tip}</span>
             </li>
           ))}
         </ul>
@@ -272,7 +260,20 @@ const TechniqueDetail: React.FC<TechniqueDetailProps> = ({
           If you find this technique helpful, you might also want to try:
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {relatedTechniques.map((related, index) => (
+          {[
+            {
+              name: "Progressive Muscle Relaxation",
+              path: "/relaxation/progressive-muscle-relaxation",
+            },
+            {
+              name: "Peaceful Place Visualization",
+              path: "/relaxation/visualization",
+            },
+            {
+              name: "Mindful Breathing",
+              path: "/relaxation/mindful-breathing",
+            },
+          ].map((related, index) => (
             <Link
               key={index}
               href={related.path}
@@ -285,6 +286,4 @@ const TechniqueDetail: React.FC<TechniqueDetailProps> = ({
       </div>
     </div>
   );
-};
-
-export default TechniqueDetail;
+}
