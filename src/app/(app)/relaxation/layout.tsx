@@ -4,6 +4,7 @@ import {
   BookOpenIcon,
   LightBulbIcon,
   SunIcon,
+  UserIcon,
 } from "@heroicons/react/24/outline";
 
 // Move metadata to a separate file or remove the "use client" directive
@@ -34,6 +35,11 @@ const navLinks: NavLink[] = [
     href: "/relaxation/visualization",
     label: "Visualization",
     icon: LightBulbIcon,
+  },
+  {
+    href: "/relaxation/body-scan",
+    label: "Body Scan",
+    icon: UserIcon,
   },
 ];
 

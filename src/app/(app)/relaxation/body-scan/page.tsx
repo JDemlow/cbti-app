@@ -1,8 +1,8 @@
-// app/(app)/relaxation/deep-breathing/page.tsx
 "use client";
 
 import { useState } from "react";
 import Link from "next/link";
+import RelaxationTimer from "@/components/relaxation/RelaxationTimer";
 import {
   ArrowLeftIcon,
   ClockIcon,
@@ -11,16 +11,14 @@ import {
   BookmarkIcon,
   CheckIcon,
 } from "@heroicons/react/24/outline";
-import RelaxationTimer from "@/components/relaxation/RelaxationTimer";
 
-export default function DeepBreathingPage() {
+export default function BodyScanMeditationPage() {
   const [isFavorite, setIsFavorite] = useState(false);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
   const [isStarted, setIsStarted] = useState(false);
 
   const toggleFavorite = () => {
     setIsFavorite(!isFavorite);
-    // In a real implementation, this would persist to user data
   };
 
   const toggleStepCompletion = (stepIndex: number) => {
@@ -36,32 +34,39 @@ export default function DeepBreathingPage() {
     setIsStarted(false);
   };
 
-  // Define the steps for deep breathing technique
+  // Define the steps for Body Scan Meditation
   const steps = [
-    "Find a comfortable sitting or lying position in a quiet space.",
-    "Place one hand on your chest and the other on your abdomen, just below your ribcage.",
-    "Take a slow, deep breath in through your nose, feeling your abdomen rise. Your chest should move only slightly.",
-    "Hold your breath for a moment (1-2 seconds).",
-    "Exhale slowly through your mouth, feeling your abdomen fall.",
-    "Focus on the sensation of your breath and how your body relaxes with each exhale.",
-    "Continue breathing deeply for 5-10 minutes, maintaining a slow rhythm.",
+    "Find a comfortable position, either lying down or sitting in a supportive chair.",
+    "Close your eyes and take a few deep, calming breaths.",
+    "Begin to focus your attention on your toes, noticing any sensations without judgment.",
+    "Gradually move your attention slowly up through your feet, ankles, and lower legs.",
+    "Continue moving your awareness through your knees, thighs, and hips.",
+    "Shift your focus to your lower back, abdomen, and then your chest.",
+    "Move your attention to your upper back, shoulders, and upper arms.",
+    "Bring awareness to your elbows, forearms, and hands.",
+    "Focus on your neck and throat area.",
+    "Slowly move your attention to your face, including jaw, cheeks, eyes, and forehead.",
+    "Take a moment to sense your entire body as a whole.",
+    "Gently bring your awareness back to your breath and the present moment.",
   ];
 
   // Benefits of this technique
   const benefits = [
-    "Reduces physical tension and promotes relaxation",
-    "Decreases stress and anxiety levels",
-    "Lowers heart rate and blood pressure",
-    "Helps quiet racing thoughts",
-    "Can be practiced anywhere, even in bed",
+    "Increases body awareness and mindfulness",
+    "Reduces physical tension and stress",
+    "Helps calm racing thoughts",
+    "Improves ability to relax and let go of tension",
+    "Can help manage chronic pain and discomfort",
+    "Enhances mind-body connection",
   ];
 
   // Tips for better practice
   const tips = [
-    "Try to breathe at a rate of about 6-8 breaths per minute",
-    "If your mind wanders, gently bring your focus back to your breathing",
-    "Practice regularly, not just when you're having trouble sleeping",
-    "Try to make your exhale slightly longer than your inhale for enhanced relaxation",
+    "Move slowly and deliberately through each body part",
+    "If your mind wanders, gently bring it back to the body part you're focusing on",
+    "Don't try to change any sensations, just observe them",
+    "Practice in a quiet, comfortable environment",
+    "It's normal for your mind to drift - this is part of the practice",
   ];
 
   return (
@@ -77,32 +82,34 @@ export default function DeepBreathingPage() {
             <span>Back to techniques</span>
           </Link>
 
-          <button
-            onClick={toggleFavorite}
-            className="flex items-center gap-1 text-sm"
-            aria-label={
-              isFavorite ? "Remove from favorites" : "Add to favorites"
-            }
-          >
-            <BookmarkIcon
-              className={`w-5 h-5 ${
-                isFavorite
-                  ? "fill-primary text-primary"
-                  : "text-muted-foreground"
-              }`}
-            />
-            <span>{isFavorite ? "Favorited" : "Add to favorites"}</span>
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={toggleFavorite}
+              className="flex items-center gap-1 text-sm"
+              aria-label={
+                isFavorite ? "Remove from favorites" : "Add to favorites"
+              }
+            >
+              <BookmarkIcon
+                className={`w-5 h-5 ${
+                  isFavorite
+                    ? "fill-primary text-primary"
+                    : "text-muted-foreground"
+                }`}
+              />
+              <span>{isFavorite ? "Favorited" : "Add to favorites"}</span>
+            </button>
+          </div>
         </div>
 
-        <h1 className="text-2xl font-bold">Deep Breathing Technique</h1>
+        <h1 className="text-2xl font-bold">Body Scan Meditation</h1>
         <div className="flex items-center gap-2 mt-2">
           <span className="flex items-center text-muted-foreground text-sm">
             <ClockIcon className="w-4 h-4 mr-1" />
-            5-10 minutes
+            10-20 minutes
           </span>
-          <span className="bg-success/10 text-success text-xs px-2 py-0.5 rounded">
-            Beginner
+          <span className="bg-warning/10 text-warning text-xs px-2 py-0.5 rounded">
+            Intermediate
           </span>
         </div>
       </div>
@@ -111,16 +118,16 @@ export default function DeepBreathingPage() {
       <div className="bg-card border border-border rounded-lg p-6 mb-6">
         <h2 className="text-xl font-semibold mb-3">About This Technique</h2>
         <p className="mb-4">
-          Deep breathing (also called diaphragmatic breathing) is one of the
-          most fundamental and effective relaxation techniques. It activates
-          your body&apos;s natural relaxation response by engaging the
-          parasympathetic nervous system, which helps counteract the stress
-          response.
+          Body Scan Meditation is a mindfulness practice that involves
+          systematically focusing your attention on different parts of your
+          body, from toes to head. This technique helps you develop a deeper
+          awareness of bodily sensations, release tension, and cultivate a sense
+          of calm and presence.
         </p>
         <p>
-          This technique is particularly effective before bedtime to calm your
-          mind and body, preparing you for sleep. It can also be used anytime
-          you feel anxious or have racing thoughts.
+          By methodically moving your attention through your body, you learn to
+          observe sensations without judgment, which can help reduce stress,
+          anxiety, and physical tension.
         </p>
       </div>
 
@@ -132,7 +139,7 @@ export default function DeepBreathingPage() {
               <h2 className="text-xl font-semibold mb-3">Ready to begin?</h2>
               <p className="mb-0">
                 Find a quiet, comfortable space where you won&apos;t be
-                disturbed for the next 5-10 minutes.
+                disturbed for the next 10-20 minutes.
               </p>
             </div>
             <div className="flex items-center gap-3">
@@ -151,7 +158,7 @@ export default function DeepBreathingPage() {
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold">Follow these steps</h2>
             <div className="flex items-center gap-2">
-              <RelaxationTimer defaultMinutes={5} />
+              <RelaxationTimer defaultMinutes={10} />
               <span className="text-sm text-muted-foreground ml-2">
                 {completedSteps.length}/{steps.length} completed
               </span>
@@ -253,10 +260,13 @@ export default function DeepBreathingPage() {
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {[
-            { name: "4-7-8 Breathing", path: "/relaxation/478-breathing" },
             {
               name: "Progressive Muscle Relaxation",
               path: "/relaxation/progressive-muscle-relaxation",
+            },
+            {
+              name: "Peaceful Place Visualization",
+              path: "/relaxation/visualization",
             },
             {
               name: "Mindful Breathing",

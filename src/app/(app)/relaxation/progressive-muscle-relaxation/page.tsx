@@ -10,6 +10,7 @@ import {
   BookmarkIcon,
   CheckIcon,
 } from "@heroicons/react/24/outline";
+import RelaxationTimer from "@/components/relaxation/RelaxationTimer";
 
 export default function ProgressiveMuscleRelaxationPage() {
   const [isFavorite, setIsFavorite] = useState(false);
@@ -182,26 +183,32 @@ export default function ProgressiveMuscleRelaxationPage() {
 
       {/* Start button or progress */}
       {!isStarted ? (
-        <div className="bg-primary text-white rounded-lg p-6 mb-6 text-center">
-          <h2 className="text-xl font-semibold mb-3">Ready to begin?</h2>
-          <p className="mb-4">
-            Find a comfortable position where your body is supported. You can
-            practice this technique lying down in bed or sitting in a
-            comfortable chair.
-          </p>
-          <button
-            onClick={() => setIsStarted(true)}
-            className="inline-flex items-center px-6 py-3 bg-white text-primary font-medium rounded-md hover:bg-primary-light/10 transition-colors"
-          >
-            <PlayIcon className="w-5 h-5 mr-2" />
-            Start Progressive Muscle Relaxation
-          </button>
+        <div className="bg-primary text-white rounded-lg p-6 mb-6">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+            <div className="mb-4 md:mb-0 md:mr-4">
+              <h2 className="text-xl font-semibold mb-3">Ready to begin?</h2>
+              <p className="mb-0">
+                Find a quiet, comfortable space where you won&apos;t be
+                disturbed for the next 5-10 minutes.
+              </p>
+            </div>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => setIsStarted(true)}
+                className="inline-flex items-center px-6 py-3 bg-white text-primary font-medium rounded-md hover:bg-primary-light/10 transition-colors"
+              >
+                <PlayIcon className="w-5 h-5 mr-2" />
+                Start Technique
+              </button>
+            </div>
+          </div>
         </div>
       ) : (
         <div className="bg-card border border-border rounded-lg p-6 mb-6">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold">Follow these steps</h2>
             <div className="flex items-center gap-2">
+              <RelaxationTimer defaultMinutes={5} />
               <span className="text-sm text-muted-foreground">
                 {completedSteps.length}/{steps.length} completed
               </span>

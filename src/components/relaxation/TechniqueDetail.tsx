@@ -163,10 +163,6 @@ const TechniqueDetail: React.FC<TechniqueDetailProps> = ({
                 <PlayIcon className="w-5 h-5 mr-2" />
                 Start Technique
               </button>
-              <RelaxationTimer
-                defaultMinutes={defaultTimerMinutes}
-                className="hidden md:block"
-              />
             </div>
           </div>
         </div>
