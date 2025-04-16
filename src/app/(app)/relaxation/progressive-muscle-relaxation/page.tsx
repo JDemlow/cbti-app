@@ -205,11 +205,11 @@ export default function ProgressiveMuscleRelaxationPage() {
         </div>
       ) : (
         <div className="bg-card border border-border rounded-lg p-6 mb-6">
-          <div className="flex justify-between items-center mb-4">
+          <div className="flex flex-col md:flex-row justify-between items-center mb-4">
             <h2 className="text-xl font-semibold">Follow these steps</h2>
-            <div className="flex items-center gap-2">
-              <RelaxationTimer defaultMinutes={5} />
-              <span className="text-sm text-muted-foreground">
+            <div className="flex flex-col md:flex-row items-center gap-2">
+              <RelaxationTimer defaultMinutes={5} className="hidden md:block" />
+              <span className="text-sm text-muted-foreground ml-2">
                 {completedSteps.length}/{steps.length} completed
               </span>
               <button
@@ -219,6 +219,7 @@ export default function ProgressiveMuscleRelaxationPage() {
               >
                 <ArrowPathIcon className="w-5 h-5" />
               </button>
+              <RelaxationTimer defaultMinutes={5} className="md:hidden" />
             </div>
           </div>
 
