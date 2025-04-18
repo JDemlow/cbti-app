@@ -4,6 +4,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import ThemeToggle from "@/components/theme/ThemeToggle";
 import {
   HomeIcon,
   // CalendarIcon,
@@ -130,6 +131,13 @@ export default function Sidebar() {
             );
           })}
         </nav>
+
+        <div className="p-4 border-t border-border">
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <span className="text-sm">Light/Dark Mode</span>
+          </div>
+        </div>
 
         {/* Log Out */}
         <div className="p-4 border-t border-border">

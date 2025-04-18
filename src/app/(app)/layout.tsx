@@ -1,7 +1,11 @@
 // app/(app)/layout.tsx
+"use client";
+
 import Sidebar from "@/components/navigation/Sidebar";
 import DesktopSidebar from "@/components/navigation/DesktopSidebar";
 import Breadcrumbs from "@/components/navigation/Breadcrumbs";
+// We don't actually need to use the theme value in this component
+// so we can remove the import for useTheme
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
