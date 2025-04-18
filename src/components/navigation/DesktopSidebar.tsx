@@ -59,7 +59,7 @@ export default function DesktopSidebar() {
       </div>
 
       {/* Navigation Links */}
-      <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
+      <nav className="flex-1 p-4 space-y-1">
         {navItems.map((item) => {
           const isActive =
             pathname === item.href || pathname.startsWith(`${item.href}/`);
