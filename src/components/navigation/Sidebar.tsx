@@ -83,7 +83,7 @@ export default function Sidebar() {
       >
         <div className="p-4 flex items-center justify-between border-b border-border">
           <div className="text-xl font-bold text-primary">RealSleep</div>
-          <div className="p-4 border-t border-border">
+          <div className="p-4">
             <div className="flex items-center gap-2">
               <ThemeToggle />
             </div>
