@@ -83,6 +83,11 @@ export default function Sidebar() {
       >
         <div className="p-4 flex items-center justify-between border-b border-border">
           <div className="text-xl font-bold text-primary">RealSleep</div>
+          <div className="p-4 border-t border-border">
+            <div className="flex items-center gap-2">
+              <ThemeToggle />
+            </div>
+          </div>
           <button
             onClick={toggleMobileMenu}
             className="p-1 rounded-md hover:bg-muted transition-colors"
@@ -131,13 +136,6 @@ export default function Sidebar() {
             );
           })}
         </nav>
-
-        <div className="p-4 border-t border-border">
-          <div className="flex items-center gap-2">
-            <ThemeToggle />
-            <span className="text-sm">Light/Dark Mode</span>
-          </div>
-        </div>
 
         {/* Log Out */}
         <div className="p-4 border-t border-border">
