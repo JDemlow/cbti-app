@@ -1,21 +1,24 @@
-# app/core/config.py
+# backend/app/core/config.py
 from pydantic_settings import BaseSettings
 from typing import List, Optional
 import secrets
-from pydantic import AnyHttpUrl
+from pydantic import AnyHttpUrl, validator
 
 
 class Settings(BaseSettings):
-    """
-    Application configuration settings loaded from environment variables.
-    """
-
     API_PREFIX: str = "/api"
     PROJECT_NAME: str = "CBT-I Sleep Application"
-    DEBUG: bool = False
+    DEBUG: bool = True
     SECRET_KEY: str = secrets.token_urlsafe(32)
+
+    # 60 minutes * 24 hours * 7 days = 7 days in minutes
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7
+
+    # CORS settings
+    CORS_ORIGINS: List[str] = ["http://localhost:3000"]
+
+    # Database settings
     DATABASE_URL: str = "sqlite:///./cbt_sleep_app.db"
-    CORS_ORIGINS: List[AnyHttpUrl] = ["http://localhost:3000"]  # Frontend URL
 
     class Config:
         env_file = ".env"
