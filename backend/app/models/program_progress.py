@@ -1,44 +1,41 @@
-# backend/app/models/sleep_diary.py
-from sqlalchemy import Column, Integer, String, Float, DateTime, Text, ForeignKey, Time
+from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, DateTime, Text
 from sqlalchemy.orm import relationship
-from datetime import time, date
 
 from backend.app.models.base import Base, TimestampMixin
 
 
-class SleepDiary(Base, TimestampMixin):
-    """Model for storing daily sleep diary entries."""
+class Activity(Base, TimestampMixin):
+    """Model for program activities that users need to complete."""
 
-    __tablename__ = "sleep_diaries"
+    __tablename__ = "activities"
+
+    id = Column(Integer, primary_key=True, index=True)
+    program_week = Column(Integer, nullable=False)
+    title = Column(String(255), nullable=False)
+    description = Column(Text)
+    type = Column(String(50))  # education, exercise, assessment, etc.
+    duration = Column(String(50))  # approximate time to complete
+    order = Column(Integer)  # ordering within the week
+
+    def __repr__(self):
+        return f"<Activity {self.title} (Week {self.program_week})>"
+
+
+class ProgramProgress(Base, TimestampMixin):
+    """Model for tracking user progress through the CBT-I program."""
+
+    __tablename__ = "program_progress"
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    date = Column(DateTime, nullable=False, index=True)
-
-    # Bedtime information
-    bed_time = Column(Time, nullable=False)
-    fall_asleep_time = Column(Time, nullable=False)
-
-    # Wake time information
-    wake_time = Column(Time, nullable=False)
-    get_up_time = Column(Time, nullable=False)
-
-    # Sleep metrics
-    awakenings = Column(Integer, default=0)
-    total_awake_time = Column(Integer, default=0)  # in minutes
-    sleep_quality = Column(Integer)  # 1-5 rating
-    restedness = Column(Integer)  # 1-5 rating
-    mood = Column(Integer)  # 1-5 rating
-
-    # Calculated fields (can be computed or stored)
-    time_in_bed = Column(Integer)  # in minutes
-    total_sleep_time = Column(Integer)  # in minutes
-    sleep_efficiency = Column(Float)  # percentage
-
+    activity_id = Column(Integer, ForeignKey("activities.id"), nullable=False)
+    completed = Column(Boolean, default=False)
+    completed_at = Column(DateTime)
     notes = Column(Text)
 
     # Relationships
-    user = relationship("User", back_populates="sleep_diaries")
+    user = relationship("User", back_populates="program_progress")
+    activity = relationship("Activity")
 
     def __repr__(self):
-        return f"<SleepDiary {self.date} for user {self.user_id}>"
+        return f"<ProgramProgress User:{self.user_id} Activity:{self.activity_id} Completed:{self.completed}>"
