@@ -1,8 +1,9 @@
+// src/app/(auth)/register/page.tsx
 "use client";
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useAuth } from "@/hooks/useAuth";
 import {
   EyeIcon,
   EyeSlashIcon,
@@ -11,11 +12,9 @@ import {
 } from "@heroicons/react/24/outline";
 
 export default function RegisterPage() {
-  const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
+  const { register, error, isLoading } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -60,34 +59,33 @@ export default function RegisterPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-    setErrorMessage("");
 
     // Basic validation
     if (formData.password !== formData.confirmPassword) {
-      setErrorMessage("Passwords don't match.");
-      setIsLoading(false);
+      alert("Passwords don't match.");
       return;
     }
 
     if (passwordStrength < 3) {
-      setErrorMessage("Please choose a stronger password.");
-      setIsLoading(false);
+      alert("Please choose a stronger password.");
+      return;
+    }
+
+    if (!formData.agreeTerms) {
+      alert("Please agree to the terms of service.");
       return;
     }
 
     try {
-      // This would be replaced with actual registration logic
-      // For demonstration, we'll simulate a successful registration after a delay
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-
-      // After successful registration, redirect to onboarding or dashboard
-      router.push("/onboarding");
+      await register({
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        password: formData.password,
+      });
     } catch (err) {
+      // Error is handled by the useAuth hook
       console.error("Registration error:", err);
-      setErrorMessage("Registration failed. Please try again.");
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -104,15 +102,16 @@ export default function RegisterPage() {
         </div>
 
         {/* Error Message */}
-        {errorMessage && (
+        {error && (
           <div className="bg-error/10 border border-error/30 text-error p-4 rounded-md">
-            {errorMessage}
+            {error}
           </div>
         )}
 
         {/* Registration Form */}
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-4">
+            {/* Name fields */}
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
                 <label
@@ -153,6 +152,7 @@ export default function RegisterPage() {
               </div>
             </div>
 
+            {/* Email field */}
             <div>
               <label htmlFor="email" className="block text-sm font-medium mb-1">
                 Email address
@@ -170,6 +170,7 @@ export default function RegisterPage() {
               />
             </div>
 
+            {/* Password fields with strength meter */}
             <div>
               <label
                 htmlFor="password"
@@ -275,6 +276,7 @@ export default function RegisterPage() {
               )}
             </div>
 
+            {/* Confirm Password */}
             <div>
               <label
                 htmlFor="confirmPassword"
@@ -315,6 +317,7 @@ export default function RegisterPage() {
                 )}
             </div>
 
+            {/* Terms Agreement */}
             <div className="flex items-center">
               <input
                 id="agreeTerms"
@@ -344,6 +347,7 @@ export default function RegisterPage() {
             </div>
           </div>
 
+          {/* Submit Button */}
           <div>
             <button
               type="submit"

@@ -1,6 +1,6 @@
 # backend/app/api/routes/__init__.py
 from fastapi import APIRouter
-from backend.app.api.routes import users, sleep_diary
+from backend.app.api.routes import users, sleep_diary, auth
 
 router = APIRouter()
 

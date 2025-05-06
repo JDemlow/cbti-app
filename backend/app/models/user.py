@@ -1,5 +1,5 @@
 # backend/app/models/user.py
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, Text
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, Text, JSON
 from sqlalchemy.orm import relationship
 
 from backend.app.models.base import Base, TimestampMixin
@@ -20,9 +20,18 @@ class User(Base, TimestampMixin):
     week_in_program = Column(Integer, default=1)
     is_active = Column(Boolean, default=True)
 
-    # Relationships
+    # New fields for onboarding
+    bedtime = Column(String(5))  # Store as HH:MM
+    wake_time = Column(String(5))  # Store as HH:MM
+    insomnia_duration = Column(String(50))
+    sleep_issues = Column(JSON)  # Stores list of sleep issues
+    sleep_goals = Column(JSON)  # Stores list of sleep goals
+
+    # Relationships remain the same
     sleep_diaries = relationship("SleepDiary", back_populates="user")
-    sleep_goals = relationship("SleepGoals", back_populates="user", uselist=False)
+    sleep_goals_relation = relationship(
+        "SleepGoals", back_populates="user", uselist=False
+    )
     program_progress = relationship("ProgramProgress", back_populates="user")
 
     def __repr__(self):

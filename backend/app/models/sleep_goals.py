@@ -22,7 +22,7 @@ class SleepGoals(Base, TimestampMixin):
     current_sleep_window = Column(Integer)  # in minutes
 
     # Relationships
-    user = relationship("User", back_populates="sleep_goals")
+    user = relationship("User", back_populates="sleep_goals_relation")
 
     def __repr__(self):
         return f"<SleepGoals for user {self.user_id}>"
