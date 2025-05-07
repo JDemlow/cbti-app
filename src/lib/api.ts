@@ -3,7 +3,7 @@
 import { getAuthToken, clearAuthToken } from "./auth";
 
 // Define base API URL based on environment
-const API_BASE_URL =
+export const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
 
 // Generic API error response type

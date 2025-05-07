@@ -43,7 +43,7 @@ class UserInDB(UserBase):
     week_in_program: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True  # Replace orm_mode in Pydantic V2
 
 
 class UserResponse(UserInDB):

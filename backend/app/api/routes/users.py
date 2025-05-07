@@ -10,6 +10,11 @@ from backend.app.models.user import User
 from passlib.context import CryptContext
 
 router = APIRouter()
+
+import warnings
+
+warnings.filterwarnings("ignore", category=DeprecationWarning)
+
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 

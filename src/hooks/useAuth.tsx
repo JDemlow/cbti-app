@@ -11,7 +11,7 @@ import {
   ReactNode,
 } from "react";
 import { useRouter } from "next/navigation";
-import { api } from "@/lib/api";
+import { api, API_BASE_URL } from "@/lib/api";
 import {
   setAuthToken,
   clearAuthToken,
@@ -33,7 +33,6 @@ interface AuthContextData extends AuthState {
   login: (email: string, password: string) => Promise<void>;
   register: (userData: RegisterData) => Promise<void>;
   logout: () => void;
-  // Updated return type to match implementation
   updateUserData: (userData: Partial<UserData>) => Promise<UserData>;
 }
 
@@ -45,12 +44,6 @@ interface RegisterData {
   lastName: string;
   phoneNumber?: string;
   timeZone?: string;
-}
-
-// Types for login response
-interface LoginResponse {
-  token: string;
-  user: UserData;
 }
 
 // Create a context for authentication
@@ -104,23 +97,39 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     initializeAuth();
   }, []);
 
-  // Login function
   const login = useCallback(
     async (email: string, password: string) => {
       setAuthState((prev) => ({ ...prev, isLoading: true, error: null }));
 
       try {
-        const response = await api.post<LoginResponse>(
-          "/auth/login",
-          { email, password },
-          { requireAuth: false }
-        );
+        // Define the response type inline
+        interface LoginResponse {
+          access_token: string;
+          token_type: string;
+          user: UserData;
+        }
 
-        setAuthToken(response.token);
-        storeUserData(response.user);
+        const formData = new FormData();
+        formData.append("username", email);
+        formData.append("password", password);
+
+        const response = await fetch(`${API_BASE_URL}/auth/login`, {
+          method: "POST",
+          body: formData,
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.detail || "Login failed");
+        }
+
+        const data: LoginResponse = await response.json();
+
+        setAuthToken(data.access_token);
+        storeUserData(data.user);
 
         setAuthState({
-          user: response.user,
+          user: data.user,
           isLoading: false,
           error: null,
         });
