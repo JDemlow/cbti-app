@@ -1,15 +1,14 @@
+// src/app/(auth)/login/page.tsx
 "use client";
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useAuth } from "@/hooks/useAuth";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 
 export default function LoginPage() {
-  const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
+  const { login, error, isLoading } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -26,22 +25,7 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-    setErrorMessage("");
-
-    try {
-      // This would be replaced with actual authentication logic
-      // For demonstration, we'll simulate a successful login after a delay
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // After successful login, redirect to dashboard
-      router.push("/dashboard");
-    } catch (err) {
-      console.error("Login error:", err);
-      setErrorMessage("Invalid email or password. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
+    await login(formData.email, formData.password);
   };
 
   return (
@@ -57,9 +41,9 @@ export default function LoginPage() {
         </div>
 
         {/* Error Message */}
-        {errorMessage && (
+        {error && (
           <div className="bg-error/10 border border-error/30 text-error p-4 rounded-md">
-            {errorMessage}
+            {error}
           </div>
         )}
 

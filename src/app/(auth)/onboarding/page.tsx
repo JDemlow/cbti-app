@@ -1,10 +1,12 @@
+// src/app/(auth)/onboarding/page.tsx
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/hooks/useAuth";
 import { CheckIcon, ArrowRightIcon } from "@heroicons/react/24/outline";
 
-// Mock sleep issues options
+// Existing mock data can be kept
 const sleepIssues = [
   "Difficulty falling asleep",
   "Waking up during the night",
@@ -16,7 +18,6 @@ const sleepIssues = [
   "Excessive daytime sleepiness",
 ];
 
-// Mock goals options
 const sleepGoals = [
   "Fall asleep faster",
   "Stay asleep through the night",
@@ -29,9 +30,9 @@ const sleepGoals = [
 ];
 
 export default function OnboardingPage() {
+  const { user, updateUserData, isLoading: isUpdating } = useAuth();
   const router = useRouter();
   const [step, setStep] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     selectedIssues: [] as string[],
     selectedGoals: [] as string[],
@@ -42,51 +43,74 @@ export default function OnboardingPage() {
     insomniaDuration: "",
   });
 
-  // Toggle selection for issues and goals
-  const toggleSelection = (item: string, type: "issues" | "goals") => {
-    if (type === "issues") {
-      if (formData.selectedIssues.includes(item)) {
-        setFormData({
-          ...formData,
-          selectedIssues: formData.selectedIssues.filter((i) => i !== item),
-        });
-      } else {
-        setFormData({
-          ...formData,
-          selectedIssues: [...formData.selectedIssues, item],
-        });
-      }
-    } else {
-      if (formData.selectedGoals.includes(item)) {
-        setFormData({
-          ...formData,
-          selectedGoals: formData.selectedGoals.filter((i) => i !== item),
-        });
-      } else {
-        setFormData({
-          ...formData,
-          selectedGoals: [...formData.selectedGoals, item],
-        });
-      }
+  // Prefill form with existing user data if available
+  useEffect(() => {
+    if (user) {
+      setFormData((prevData) => ({
+        ...prevData,
+        sleepTimes: {
+          typicalBedtime: user.bedtime || prevData.sleepTimes.typicalBedtime,
+          typicalWakeTime: user.wakeTime || prevData.sleepTimes.typicalWakeTime,
+        },
+      }));
     }
+  }, [user]);
+
+  // Define a type for the form data keys we want to dynamically update
+  type SelectionKey = "selectedIssues" | "selectedGoals";
+
+  // Toggle selection with explicit type handling
+  const toggleSelection = (item: string, type: "issues" | "goals") => {
+    const key: SelectionKey =
+      type === "issues" ? "selectedIssues" : "selectedGoals";
+
+    setFormData((prev) => {
+      const currentSelections = prev[key];
+      const updatedSelections = currentSelections.includes(item)
+        ? currentSelections.filter((i) => i !== item)
+        : [...currentSelections, item];
+
+      return {
+        ...prev,
+        [key]: updatedSelections,
+      };
+    });
   };
 
   const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
+    setFormData((prev) => ({
+      ...prev,
       sleepTimes: {
-        ...formData.sleepTimes,
+        ...prev.sleepTimes,
         [name]: value,
       },
-    });
+    }));
   };
 
   const handleDurationChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setFormData({
-      ...formData,
+    setFormData((prev) => ({
+      ...prev,
       insomniaDuration: e.target.value,
-    });
+    }));
+  };
+
+  const handleSubmit = async () => {
+    try {
+      // Prepare data to update user profile
+      await updateUserData({
+        sleepIssues: formData.selectedIssues,
+        sleepGoals: formData.selectedGoals,
+        bedtime: formData.sleepTimes.typicalBedtime,
+        wakeTime: formData.sleepTimes.typicalWakeTime,
+        insomniaDuration: formData.insomniaDuration,
+      });
+
+      // Redirect to dashboard
+      router.push("/dashboard");
+    } catch (error) {
+      console.error("Onboarding update failed", error);
+    }
   };
 
   const handleNext = () => {
@@ -103,68 +127,18 @@ export default function OnboardingPage() {
     }
   };
 
-  const handleSubmit = async () => {
-    setIsLoading(true);
-
-    try {
-      // Here you would normally send the data to your backend
-      // For now, we'll simulate a delay and then redirect
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      router.push("/dashboard");
-    } catch (err) {
-      console.error("Failed to submit onboarding data:", err);
-      // We could add error handling here if needed
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   // Determine if current step is complete enough to proceed
   const canProceed = () => {
-    if (step === 1) {
-      return formData.selectedIssues.length > 0;
-    } else if (step === 2) {
-      return formData.selectedGoals.length > 0;
-    } else {
-      return formData.insomniaDuration !== "";
+    switch (step) {
+      case 1:
+        return formData.selectedIssues.length > 0;
+      case 2:
+        return formData.selectedGoals.length > 0;
+      case 3:
+        return formData.insomniaDuration !== "";
+      default:
+        return false;
     }
-  };
-
-  // Render progress indicator
-  const renderProgress = () => {
-    return (
-      <div className="mb-8 flex items-center justify-center">
-        {[1, 2, 3].map((stepNumber) => (
-          <div
-            key={stepNumber}
-            className={`flex items-center ${stepNumber < 3 ? "flex-1" : ""}`}
-          >
-            <div
-              className={`w-8 h-8 rounded-full flex items-center justify-center border-2 ${
-                stepNumber === step
-                  ? "border-primary bg-primary text-white"
-                  : stepNumber < step
-                    ? "border-primary bg-primary/10 text-primary"
-                    : "border-muted-foreground bg-background text-muted-foreground"
-              }`}
-            >
-              {stepNumber < step ? (
-                <CheckIcon className="w-4 h-4" />
-              ) : (
-                stepNumber
-              )}
-            </div>
-            {stepNumber < 3 && (
-              <div
-                className={`h-1 flex-1 mx-2 ${
-                  stepNumber < step ? "bg-primary" : "bg-muted-foreground/30"
-                }`}
-              ></div>
-            )}
-          </div>
-        ))}
-      </div>
-    );
   };
 
   return (
@@ -180,9 +154,6 @@ export default function OnboardingPage() {
             Answer a few questions to help us tailor your CBT-I program
           </p>
         </div>
-
-        {/* Progress Indicator */}
-        {renderProgress()}
 
         {/* Step 1: Sleep Issues */}
         {step === 1 && (
@@ -351,11 +322,11 @@ export default function OnboardingPage() {
           <button
             type="button"
             onClick={handleNext}
-            disabled={!canProceed() || isLoading}
+            disabled={!canProceed() || isUpdating}
             className="px-4 py-2 text-sm font-medium text-white bg-primary rounded-md hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
           >
-            {isLoading ? "Processing..." : step === 3 ? "Complete" : "Next"}
-            {!isLoading && step < 3 && (
+            {isUpdating ? "Processing..." : step === 3 ? "Complete" : "Next"}
+            {!isUpdating && step < 3 && (
               <ArrowRightIcon className="ml-2 h-4 w-4" />
             )}
           </button>

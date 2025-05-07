@@ -2,6 +2,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
+import json
 
 from backend.app.core.database import get_db
 from backend.app.schemas.user import UserCreate, UserResponse, UserUpdate
@@ -9,6 +10,11 @@ from backend.app.models.user import User
 from passlib.context import CryptContext
 
 router = APIRouter()
+
+import warnings
+
+warnings.filterwarnings("ignore", category=DeprecationWarning)
+
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
@@ -49,6 +55,12 @@ def create_user(user_data: UserCreate, db: Session = Depends(get_db)):
         last_name=user_data.last_name,
         phone_number=user_data.phone_number,
         time_zone=user_data.time_zone,
+        # Add new fields with default values or None
+        bedtime=None,
+        wake_time=None,
+        insomnia_duration=None,
+        sleep_issues=None,
+        sleep_goals=None,
     )
 
     db.add(db_user)
@@ -105,6 +117,14 @@ def update_user(user_id: int, user_data: UserUpdate, db: Session = Depends(get_d
 
     # Update user data for any provided fields
     update_data = user_data.dict(exclude_unset=True)
+
+    # Special handling for JSON fields to ensure they're stored correctly
+    if "sleep_issues" in update_data and update_data["sleep_issues"] is not None:
+        update_data["sleep_issues"] = json.dumps(update_data["sleep_issues"])
+
+    if "sleep_goals" in update_data and update_data["sleep_goals"] is not None:
+        update_data["sleep_goals"] = json.dumps(update_data["sleep_goals"])
+
     for key, value in update_data.items():
         setattr(db_user, key, value)
 

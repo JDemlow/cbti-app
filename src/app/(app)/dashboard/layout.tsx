@@ -1,5 +1,6 @@
-// app/dashboard/layout.tsx
+// src/app/(app)/dashboard/layout.tsx
 import { Metadata } from "next";
+import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 
 export const metadata: Metadata = {
   title: "Dashboard | RealSleep CBT-I Program",
@@ -12,5 +13,9 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <div className="dashboard-layout">{children}</div>;
+  return (
+    <ProtectedRoute>
+      <div className="dashboard-layout">{children}</div>
+    </ProtectedRoute>
+  );
 }
